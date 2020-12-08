@@ -1,10 +1,18 @@
 #include <iostream>
+#include "Engine.h"
 
-int main()
+int main(int argv, char **args)
 {
-  std::cout << "🐙 The most merciful thing in the world, I think, is the inability of the "
-    "human mind to correlate all its contents. We live on a placid island of ignorance "
-    "in the midst of black seas of infinity, and it was not meant that we should voyage far. 🏝" << std::endl;
-    
-  return 0;
+  Engine *engine = new Engine();
+
+  if (engine->Setup() == false)
+  {
+    engine->Quit();
+    return 0;
+  }
+
+  int status = engine->Run();
+  engine->Quit();
+
+  return status;
 }

@@ -16,7 +16,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Kenny Deriemaeker - [@riemaeker](https://twitter.com/riemaker) - kenny.deriemaeker@gmail.com
 
-Project Link: [https://github.com/riemaker/texelstorm-engine](https://github.com/riemaker/texelstorm-engine)
+Project Link: [https://github.com/riemaeker/texelstorm-engine](https://github.com/riemaeker/texelstorm-engine)
 
 ## Acknowledgements
 
