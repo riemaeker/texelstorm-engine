@@ -27,8 +27,11 @@ bool Engine::Setup()
   int window_width = 800;
   int window_height = 600;
 
+  std::ostringstream windowTitle;
+  windowTitle << ENGINE_NAME << " " << ENGINE_VERSION;
+
   sdlWindow = SDL_CreateWindow(
-    "Texelstorm", 
+    windowTitle.str().c_str(),
     SDL_WINDOWPOS_CENTERED,
     SDL_WINDOWPOS_CENTERED,
     window_width,

@@ -4,6 +4,9 @@
 #include <SDL2/SDL.h>
 #include "IRenderer.h"
 
+ #define ENGINE_NAME "Texelstorm engine"
+ #define ENGINE_VERSION "1.0.0"
+
 /**
  * \brief Core system and subsystems.
  */
