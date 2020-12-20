@@ -1,69 +1,29 @@
 #include "Engine.h"
+#include "OpenGLDisplay.h"
 #include "SoftwareRenderer.h"
 
 #include <iostream>
-#include <sstream>
-#include <cmath>
-
 #include <SDL2/SDL.h>
 
 bool Engine::Setup()
 {
-  SDL_version sdlVersion;
-  SDL_GetVersion(&sdlVersion);
-
-  std::cout << "Using SDL version "
-    << static_cast<int>(sdlVersion.major) << "."
-    << static_cast<int>(sdlVersion.minor) << "."
-    << static_cast<int>(sdlVersion.patch) << std::endl << std::endl;
-
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
   {
     std::cerr << "Error initializing SDL.";
     return false;
   }
 
-  // Create SDL window.
-  int window_width = 800;
-  int window_height = 600;
-
-  std::ostringstream windowTitle;
-  windowTitle << ENGINE_NAME << " " << ENGINE_VERSION;
-
-  sdlWindow = SDL_CreateWindow(
-    windowTitle.str().c_str(),
-    SDL_WINDOWPOS_CENTERED,
-    SDL_WINDOWPOS_CENTERED,
-    window_width,
-    window_height,
-    SDL_WINDOW_SHOWN);
-
-  if (sdlWindow == nullptr)
+  // Display setup.
+  display = new OpenGLDisplay(800, 600);
+  if (display == nullptr)
   {
-    std::cerr << "Error creating SDL window.";
+    std::cerr << "Error creating display.";
     return false;
   }
 
-  // Create SDL renderer.
-  sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
-  if (sdlRenderer == nullptr)
-  {
-    std::cerr << "Error creating SDL renderer.";
-    return false;
-  }
+  // Renderer setup.
+  renderer = new SoftwareRenderer(display);
 
-  // Create SDL framebuffer texture.
-  sdlFramebuffer = SDL_CreateTexture(
-    sdlRenderer,
-    SDL_PIXELFORMAT_ARGB8888,
-    SDL_TEXTUREACCESS_STREAMING,
-    window_width,
-    window_height);
-
-  // Create engine renderer.
-  renderer = new SoftwareRenderer();
-  renderer->Setup(window_width, window_height);
- 
   return true;
 }
 
@@ -105,32 +65,14 @@ int Engine::Run()
 
 void Engine::Quit()
 {
-  if (renderer != nullptr)
-  {
-    renderer->Quit();
-    free(renderer);
-  }
-
-  if (sdlRenderer != nullptr)
-  {
-    SDL_DestroyRenderer(sdlRenderer);
-  }
-
-  if (sdlWindow != nullptr)
-  {
-    SDL_DestroyWindow(sdlWindow);
-  }
+  free(renderer);
+  free(display);
 
   SDL_Quit();
 }
 
 void Engine::Update()
 {
-  SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-  SDL_RenderClear(sdlRenderer);
-
-  renderer->Refresh(sdlFramebuffer);
-
-  SDL_RenderCopy(sdlRenderer, sdlFramebuffer, NULL, NULL);
-  SDL_RenderPresent(sdlRenderer);
+  renderer->Refresh();
+  display->Present();
 }
