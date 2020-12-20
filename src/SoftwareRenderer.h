@@ -10,15 +10,18 @@
 class SoftwareRenderer : public IRenderer
 {
 public:
-  void Setup(int width, int height);
-  void Refresh(SDL_Texture *frameBuffer);
-  void Quit();
+  SoftwareRenderer(IDisplay *display);
+  ~SoftwareRenderer();
+
+  void Refresh();
 
 private:
   void ClearColorBuffer();
   void DrawGrid(int gridSize);
 
+  IDisplay *display;
   uint32_t *colorBuffer = nullptr;
+  
   int window_width;
   int window_height;
 };

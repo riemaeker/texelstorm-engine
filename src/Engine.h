@@ -2,6 +2,7 @@
 #define __Engine_h__
 
 #include <SDL2/SDL.h>
+#include "IDisplay.h"
 #include "IRenderer.h"
 
  #define ENGINE_NAME "Texelstorm engine"
@@ -35,10 +36,7 @@ private:
    */
   void Update();
 
-  SDL_Window *sdlWindow = nullptr;
-  SDL_Renderer *sdlRenderer = nullptr;
-  SDL_Texture *sdlFramebuffer = nullptr;
-
+  IDisplay *display = nullptr;
   IRenderer *renderer = nullptr;
 
   Uint32 lastFrameTime;

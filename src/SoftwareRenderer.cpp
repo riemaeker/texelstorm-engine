@@ -1,33 +1,33 @@
 #include "SoftwareRenderer.h"
 
-void SoftwareRenderer::Setup(int width, int height)
+SoftwareRenderer::SoftwareRenderer(IDisplay *display)
 {
-  window_width = width;
-  window_height = height;
-
   // Allocate color buffer.
+  SDL_QueryTexture(display->GetFrameBuffer(), NULL, NULL, &window_width, &window_height);
   colorBuffer = (uint32_t *)malloc(sizeof(uint32_t) * window_width * window_height);
+
+  this->display = display;
 }
 
-void SoftwareRenderer::Refresh(SDL_Texture* frameBuffer)
+SoftwareRenderer::~SoftwareRenderer()
+{
+  free(colorBuffer);
+}
+
+/**
+ * \brief Renders the current frame to the frame buffer.
+ */
+void SoftwareRenderer::Refresh()
 {
   ClearColorBuffer();
   DrawGrid(16);
 
   // Copy color buffer to frame buffer.
   SDL_UpdateTexture(
-    frameBuffer,
+    display->GetFrameBuffer(),
     NULL,
     colorBuffer,
     (int)(window_width * sizeof(uint32_t)));
-}
-
-void SoftwareRenderer::Quit()
-{
-  if (colorBuffer != nullptr)
-  {
-    free(colorBuffer);
-  }
 }
 
 /**
