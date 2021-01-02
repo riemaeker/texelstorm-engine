@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "OpenGLDisplay.h"
+#include "VulkanDisplay.h"
 #include "SoftwareRenderer.h"
 
 #include <iostream>
@@ -14,7 +15,8 @@ bool Engine::Setup()
   }
 
   // Display setup.
-  display = new OpenGLDisplay(800, 600);
+  //display = new OpenGLDisplay(800, 600);
+  display = new VulkanDisplay(1280, 720);
   if (display == nullptr)
   {
     std::cerr << "Error creating display.";
@@ -22,7 +24,7 @@ bool Engine::Setup()
   }
 
   // Renderer setup.
-  renderer = new SoftwareRenderer(display);
+  //renderer = new SoftwareRenderer(display);
 
   return true;
 }
@@ -73,6 +75,6 @@ void Engine::Quit()
 
 void Engine::Update()
 {
-  renderer->Refresh();
+  //renderer->Refresh();
   display->Present();
 }
